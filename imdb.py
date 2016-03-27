@@ -1,4 +1,9 @@
-import os,sys,bs4,requests,re,string
+import os,sys,requests,re,string
+
+try:
+	from bs4 import BeautifulSoup
+except ImportError:
+	from .bs4_local import BeautifulSoup
 
 class Imdb(object):
 	'''Class containing functions related to imdb'''
@@ -43,7 +48,7 @@ class Imdb(object):
 			except Exception as e:
 				id_list.append(None)
 			else:
-				page_soup = bs4.BeautifulSoup(page.text,"lxml")
+				page_soup = BeautifulSoup(page.text,"lxml")
 				links = page_soup.select(".b_attribution")
 				for link in links:
 					imdb_id = re.search(r"www.imdb.com/title/tt(\w+)",link.text.encode('utf-8'))
