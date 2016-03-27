@@ -19,7 +19,6 @@ if __name__ == "__main__":
 		if not os.path.isdir(sys.argv[1]):
 			print "Path provided is not a directory!"
 		else:
-			print "Starting"
 			subdb = SubDBAPI()
 			imdb = Imdb()
 			#METHOD TO GET PROXY IF PROVIDED
@@ -47,33 +46,31 @@ if __name__ == "__main__":
 				#index for which subs are found in opensubtitles.org
 				index_opensub = []
 				
-				print num_movie
-				print movie_list
+				print "Total Files - {}".format(num_movie)
 
 				if num_movie ==0:
 					opensub.logout()
 					print "No Movie to search subs for!"
 					sys.exit()
-				#get movies for which hash is present in opensubapi
-				
+
+				#get imdb id for movies whose hash is present in opensubapi
 				result = opensub.check_movie_list(movie_list)
 				if result:
 					for i in range(num_movie):
 						if result[i]:
 							imdb_id_list[i] = result[i]['MovieImdbID']
 
-				print "Getting subs from subdb"
-
+				print "Downloading Subs from Source 1"
 				for i in range(num_movie):
 					if not result[i]:
-						print i
+						print "*",
 						movie_hash = subdb.get_hash(movie_list[i])
 						sub = subdb.get_subs(movie_hash,'en')
 						if sub:
 							sub_list[i] = sub
 
 				#get movies which are present in opensub database by name or hash
-				print "Searching subs on opensub"
+				print "\nSearching Subs in Source 2"
 				result = opensub.search_sub_list(movie_list)
 
 
@@ -91,9 +88,10 @@ if __name__ == "__main__":
 							index_opensub.append(i)
 				
 				#Download Subs which are found in opensubtitles database
-				print "Downloading Subs from opensub"
+				print "Downloading Subs from Source 2"
 				down_subs = {}
 				for num in range(0,len(open_subs_id),20):
+					print "*",
 					sub = opensub.download_sub_list(open_subs_id[num:num+20])
 					if sub==None:
 						for index in range(num,num+20):
@@ -112,6 +110,7 @@ if __name__ == "__main__":
 						sub_list[index] = down_subs[sub_id]
 
 				if len(no_id_index) != 0:
+					print "Searching Subs from Source 3"
 					no_id_file = []
 					for index in no_id_index:
 						no_id_file.append(movie_list[index])
@@ -119,9 +118,8 @@ if __name__ == "__main__":
 					for ids,index in zip(id_list,no_id_index):
 						imdb_id_list[index] = ids
 
-				print imdb_id_list
 				#get info from imdb about movies in movie list
-				print "Getting info from imdb"
+				print "\nGetting Information"
 				info_list = imdb.get_info(["tt"+"0"*(7-len(ids))+ids if ids else None for ids in imdb_id_list])
 
 				#Now, sub_list = subtitles for corresponding movies in movie_list
@@ -140,7 +138,7 @@ if __name__ == "__main__":
 						no_sub_imdb_id_index.append(i)
 
 				if len(no_sub_imdb_id) != 0:
-					print "Filling Gaps"				
+					print "Downloading Subs from Source 3"				
 					result = opensub.search_sub_list(imdbid_list=no_sub_imdb_id)
 					#print result
 					sub_id=[]
@@ -168,6 +166,8 @@ if __name__ == "__main__":
 
 				#Final - sub_list - subtitles of movies in movie_list
 				#Final - info_list - info of movies in movie_list
+
+				print "Writing to Directory"
 
 				for num in range(num_movie):
 					path = movie_list[num]
@@ -221,6 +221,6 @@ if __name__ == "__main__":
 
 
 				opensub.logout()
-				print("DONE!")			
+				print("Done!")			
 	else:
 		print "Usage: {} <path to directory>".format(sys.argv[0])

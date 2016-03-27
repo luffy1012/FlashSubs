@@ -178,7 +178,6 @@ class OpenSubAPI(object):
         hash_list = [self._get_hash(path) for path in path_list]
         result = {}
         for num in range(0,len(hash_list),100):
-            print num
             self._data = self._os_server.CheckMovieHash(self.token,hash_list[num:num+100])
             temp = self._check_result('data')
             if temp:
