@@ -74,4 +74,3 @@ class Imdb(object):
 					info = info.json()
 					info_list.append(info)
 		return info_list
-
