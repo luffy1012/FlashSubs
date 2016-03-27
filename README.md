@@ -5,7 +5,7 @@ download subtitles and other information(Correct Title, IMDB rating, Plot Summar
  for movies and TV Series in our computer.
 
 Usage:
-python autosub.py <path to directory containing media>
+python flashsub.py <path to directory containing media>
 
 Requires Beautiful Soup Module to work (Though not crucial. Modifications are welcome to
 make it run without this module)
