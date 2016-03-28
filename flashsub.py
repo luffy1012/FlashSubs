@@ -20,41 +20,41 @@ def get_list(dir_path):
 
 
 if __name__ == "__main__":
-	if len(sys.argv) > 1:
-		if len(sys.argv) ==2:
-			path = sys.argv[1]
-			proxy = None
-		elif len(sys.argv) > 3:
-			print "Usage: {} '<path to directory>' [--proxy=proxy_server_url:port] ".format(sys.argv[0])
-			sys.exit()
-		elif len(sys.argv) == 3:
-			if "--proxy" in sys.argv[1].split('=') :
-				proxy = sys.arg[1].split('=')[1]
-				path = sys.argv[2]
-			elif "--proxy" in sys.argv[2].split('='):
+	try:
+		if len(sys.argv) > 1:
+			if len(sys.argv) ==2:
 				path = sys.argv[1]
-				proxy = sys.argv[2].split('=')[1]
-			else:
+				proxy = None
+			elif len(sys.argv) > 3:
 				print "Usage: {} '<path to directory>' [--proxy=proxy_server_url:port] ".format(sys.argv[0])
 				sys.exit()
+			elif len(sys.argv) == 3:
+				if "--proxy" in sys.argv[1].split('=') :
+					proxy = sys.arg[1].split('=')[1]
+					path = sys.argv[2]
+				elif "--proxy" in sys.argv[2].split('='):
+					path = sys.argv[1]
+					proxy = sys.argv[2].split('=')[1]
+				else:
+					print "Usage: {} '<path to directory>' [--proxy=proxy_server_url:port] ".format(sys.argv[0])
+					sys.exit()
 
-		if not os.path.isdir(path):
-			print "Usage: {} '<path to directory>' [--proxy=proxy_server_url:port] ".format(sys.argv[0])
-			sys.exit()
-	else:
-		RUNNING_AS_WINDOW = True
-		path = raw_input("Enter the path of the directory: ")
-		if not os.path.isdir(path):
-			print "Path given is not valid!"
-			raw_input("Press any key to exit...")
-			sys.exit()
-		conf = raw_input("Are you working behind a proxy? (y/n): ")
-		if conf.lower() in ['y','n',"yes",'yup']:
-			proxy = raw_input("Enter proxy_server:port -> ")
+			if not os.path.isdir(path):
+				print "Usage: {} '<path to directory>' [--proxy=proxy_server_url:port] ".format(sys.argv[0])
+				sys.exit()
 		else:
-			proxy = None
+			RUNNING_AS_WINDOW = True
+			path = raw_input("Enter the path of the directory: ")
+			if not os.path.isdir(path):
+				print "Path given is not valid!"
+				raw_input("Press any key to exit...")
+				sys.exit()
+			conf = raw_input("Are you working behind a proxy? (y/n): ")
+			if conf.lower() in ['y','n',"yes",'yup']:
+				proxy = raw_input("Enter proxy_server:port -> ")
+			else:
+				proxy = None
 
-	try:
 		subdb = SubDBAPI()
 		imdb = Imdb()
 		opensub = opensubapi.OpenSubAPI(proxy)
@@ -273,10 +273,9 @@ if __name__ == "__main__":
 		if RUNNING_AS_WINDOW:
 			raw_input("Press any key to exit...")
 	
-	except KeyboardInterrupt as e:
+	except BaseException as e:
 		if not type(e).__name__ == "SystemExit":
 			print e
-		raise e
 		if RUNNING_AS_WINDOW:
 			raw_input("Press any key to exit...")
 		sys.exit()
