@@ -11,7 +11,10 @@ def get_list(dir_path):
 		for fl in files:
 			name = os.path.join(direc,fl)
 			base_file,ext = os.path.splitext(name)
-			if not (os.path.exists(base_file+".srt") and os.path.exists(base_file+".nfo")) and ext in [".avi", ".mp4", ".mkv", ".mpg", ".mpeg", ".mov", ".rm", ".vob", ".wmv", ".flv", ".3gp",".3g2"]:
+			if not (os.path.exists(base_file+".srt") and \
+				os.path.exists(base_file+".nfo")) and\
+				ext in [".avi", ".mp4", ".mkv", ".mpg", ".mpeg", ".mov", ".rm", ".vob", ".wmv", ".flv", ".3gp",".3g2"] and\
+				int(os.path.getsize(name)) > 1024*1024*10:
 				file_list.append(name)
 	return file_list
 
@@ -91,11 +94,13 @@ if __name__ == "__main__":
 				if result[i]:
 					imdb_id_list[i] = result[i]['MovieImdbID']
 			
+		print "Downloading Subs from Source 1"
 		for i in xrange(num_movie):
-			print "Downloading Subs from Source 1"
 			if not result[i]:
 				print "*",
 				movie_hash = subdb.get_hash(movie_list[i])
+				if movie_hash == "SizeError":
+					continue
 				sub = subdb.get_subs(movie_hash,'en')
 				if sub:
 					sub_list[i] = sub
@@ -210,6 +215,8 @@ if __name__ == "__main__":
 			info = info_list[num]
 			sub = sub_list[num]
 
+			print "Currently Processing - {}".format(path)
+
 			try:
 				new_name = info['Title']
 			except:
@@ -240,17 +247,21 @@ if __name__ == "__main__":
 				if os.path.exists(os.path.join(base_path,base_name)+".srt"):
 					os.rename(os.path.join(base_path,base_name)+".srt",os.path.join(base_path,new_name)+".srt")
 				elif sub != None:
+					print "Subtitle Added"
 					with open(os.path.join(base_path,new_name)+".srt","w") as sub_file:
 						sub_file.write(sub)
 				if info:
+					print "Info Added"
 					with open(os.path.join(base_path,new_name)+".nfo","w") as info_file:
 						for key in info.keys():
 							info_file.write("{0}:\n{1}\n\n".format(key.encode('utf-8'),info[key].encode('utf-8')))
 			else:
 				if not os.path.exists(os.path.join(base_path,base_name)+".srt") and sub != None:
+					print "Subtitle Added"
 					with open(os.path.join(base_path,base_name)+".srt","w") as sub_file:
 						sub_file.write(sub)
 				if info != None and not os.path.exists(os.path.join(base_path,base_name)+".nfo"):
+					print "Info Added"
 					with open(os.path.join(base_path,base_name)+".nfo","w") as info_file:
 						for key in info.keys():
 							info_file.write("{0}:\n{1}\n\n".format(key.encode('utf-8'),info[key].encode('utf-8')))
@@ -262,9 +273,10 @@ if __name__ == "__main__":
 		if RUNNING_AS_WINDOW:
 			raw_input("Press any key to exit...")
 	
-	except BaseException as e:
+	except KeyboardInterrupt as e:
 		if not type(e).__name__ == "SystemExit":
 			print e
+		raise e
 		if RUNNING_AS_WINDOW:
 			raw_input("Press any key to exit...")
 		sys.exit()

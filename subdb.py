@@ -9,6 +9,11 @@ class SubDBAPI():
 		'''Returns file hash from the given file path
 		'''
 		readsize = 64*1024
+
+		size = str(os.path.getsize(file_path))
+		if int(size) < readsize*2:
+		    return "SizeError"
+
 		with open(file_path,"rb") as media_file:
 			data = media_file.read(readsize)
 			media_file.seek(-readsize,os.SEEK_END)
