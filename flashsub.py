@@ -47,8 +47,8 @@ if __name__ == "__main__":
 			path = raw_input("Enter the path of the directory: ")
 			if not os.path.isdir(path):
 				print "Path given is not valid!"
-				raw_input("Press any key to exit...")
 				sys.exit()
+			
 			conf = raw_input("Are you working behind a proxy? (y/n): ")
 			if conf.lower() in ['y','n',"yes",'yup']:
 				proxy = raw_input("Enter proxy_server:port -> ")
