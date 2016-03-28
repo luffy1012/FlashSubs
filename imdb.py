@@ -18,6 +18,8 @@ class Imdb(object):
 				,'eng','english','dual-audio','xvid','unrated','dvdscr'\
 				,'bdrip','eng-hin','hin-eng','webrip','cdrip','web','dl','webdl','cd','dvd']
 
+	def __init__(self,proxy=None):
+		self.proxy = proxy
 
 
 	def get_imdb_id(self,file_list):
@@ -43,12 +45,12 @@ class Imdb(object):
 		id_list=[]
 		for clean_name in clean_list:
 			try:
-				page = requests.get(self._search_url+clean_name)
+				page = requests.get(self._search_url+clean_name,proxies=self.proxy)
 				page.raise_for_status()
 			except Exception as e:
 				id_list.append(None)
 			else:
-				page_soup = BeautifulSoup(page.text,"lxml")
+				page_soup = BeautifulSoup(page.text,"html.parser")
 				links = page_soup.select(".b_attribution")
 				for link in links:
 					imdb_id = re.search(r"www.imdb.com/title/tt(\w+)",link.text.encode('utf-8'))
@@ -70,7 +72,7 @@ class Imdb(object):
 				info_list.append(None)
 			else:
 				try:
-					info = requests.get(self._imdb_url,params={'i':ids,'plot':'full'})
+					info = requests.get(self._imdb_url,params={'i':ids,'plot':'full'},proxies=self.proxy)
 					info.raise_for_status()
 				except Exception as e:
 					info_list.append(None)
