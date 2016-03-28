@@ -1,7 +1,9 @@
 import opensubapi
 from subdb import SubDBAPI
 from imdb import Imdb
-import os,sys
+import os,sys,string
+
+RUNNING_AS_WINDOW = False
 
 def get_list(dir_path):
 	file_list = []
@@ -20,7 +22,7 @@ if __name__ == "__main__":
 			path = sys.argv[1]
 			proxy = None
 		elif len(sys.argv) > 3:
-			print "Usage: {} <path to directory> [--proxy=proxy_server_url:port] ".format(sys.argv[0])
+			print "Usage: {} '<path to directory>' [--proxy=proxy_server_url:port] ".format(sys.argv[0])
 			sys.exit()
 		elif len(sys.argv) == 3:
 			if "--proxy" in sys.argv[1].split('=') :
@@ -30,13 +32,26 @@ if __name__ == "__main__":
 				path = sys.argv[1]
 				proxy = sys.argv[2].split('=')[1]
 			else:
-				print "Usage: {} <path to directory> [--proxy=proxy_server_url:port] ".format(sys.argv[0])
+				print "Usage: {} '<path to directory>' [--proxy=proxy_server_url:port] ".format(sys.argv[0])
 				sys.exit()
 
 		if not os.path.isdir(path):
-			print "Usage: {} <path to directory> [--proxy=proxy_server_url:port] ".format(sys.argv[0])
+			print "Usage: {} '<path to directory>' [--proxy=proxy_server_url:port] ".format(sys.argv[0])
 			sys.exit()
+	else:
+		RUNNING_AS_WINDOW = True
+		path = raw_input("Enter the path of the directory: ")
+		if not os.path.isdir(path):
+			print "Path given is not valid!"
+			raw_input("Press any key to exit...")
+			sys.exit()
+		conf = raw_input("Are you working behind a proxy? (y/n): ")
+		if conf.lower() in ['y','n',"yes",'yup']:
+			proxy = raw_input("Enter proxy_server:port -> ")
+		else:
+			proxy = None
 
+	try:
 		subdb = SubDBAPI()
 		imdb = Imdb()
 		opensub = opensubapi.OpenSubAPI(proxy)
@@ -75,8 +90,9 @@ if __name__ == "__main__":
 			for i in xrange(num_movie):
 				if result[i]:
 					imdb_id_list[i] = result[i]['MovieImdbID']
-			print "Downloading Subs from Source 1"
+			
 		for i in xrange(num_movie):
+			print "Downloading Subs from Source 1"
 			if not result[i]:
 				print "*",
 				movie_hash = subdb.get_hash(movie_list[i])
@@ -183,6 +199,10 @@ if __name__ == "__main__":
 
 		print "Writing to Directory"
 
+		#Removing forbidden characters from files (Windows forbidden)
+		forbidden_chars = "*.\"/\[]:;|=,'"
+		table = string.maketrans(forbidden_chars,' '*len(forbidden_chars))
+
 		for num in xrange(num_movie):
 			path = movie_list[num]
 			base_path,name = os.path.split(path)
@@ -204,12 +224,14 @@ if __name__ == "__main__":
 						len_season = 2
 						len_episode = 2
 						if len(Episode) > len_episode:
-							new_name = "S{0:0>2}E{1} - {2}".format(str(Season),str(Episode),info['Title'])
+							new_name = "S{0:0>2}E{1}_{2}".format(str(Season),str(Episode),info['Title'])
 						else:
-							new_name = "S{0:0>2}E{1:0>2} - {2}".format(str(Season),str(Episode),info['Title'])
+							new_name = "S{0:0>2}E{1:0>2}_{2}".format(str(Season),str(Episode),info['Title'])
 					else:
 						new_name = info['Title']
 							
+			#So that names do not conflict in Windows ( "/\:|' etc. are not allowed in Windows)
+			new_name = str(new_name).translate(table)
 
 			if not os.path.exists(os.path.join(base_path,new_name)+ext):
 				os.rename(path,os.path.join(base_path,new_name)+ext)
@@ -235,6 +257,14 @@ if __name__ == "__main__":
 
 
 		opensub.logout()
-		print("Done!")          
-	else:
-		print "Usage: {} <path to directory> [--proxy=proxy_server_url:port] ".format(sys.argv[0])
+		print("Done!")
+
+		if RUNNING_AS_WINDOW:
+			raw_input("Press any key to exit...")
+	
+	except BaseException as e:
+		if not type(e).__name__ == "SystemExit":
+			print e
+		if RUNNING_AS_WINDOW:
+			raw_input("Press any key to exit...")
+		sys.exit()
