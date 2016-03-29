@@ -5,7 +5,9 @@ download subtitles and other information(Correct Title, IMDB rating, Plot Summar
 for movies and TV Series in our computer.
 
 Usage:
-python flashsub.py <'path to directory containing media'> [--proxy=proxy_server:port]
+python flashsub.py <'path to directory containing media'>
+
+(for additional options see- python flashsub.py --help)
 
 OR
 
@@ -32,6 +34,3 @@ Doing so may result in improper renaming and will cause a mess.
 Program only recognises files greater than 100MB to avoid files which are neither TV shows or Movies.
 All changes are stored in a file name log.txt in the folder containing the program
 which is deleted after its size reaches 10MB.
-
-
-TODO: Implement downloading through link in search when download limit reached.
