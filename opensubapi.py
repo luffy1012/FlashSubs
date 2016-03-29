@@ -254,3 +254,12 @@ class OpenSubAPI(object):
         f.close()
         returnedhash = "%016x" % hash
         return str(returnedhash)
+
+    def get_down_lim(self):
+        self._data = self._os_server.NoOperation(self.token)
+        try:
+            down_quota = self._data['donwload_limits']['client_download_quota']
+        except:
+            return None
+        else:
+            return down_quota

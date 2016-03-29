@@ -1,9 +1,6 @@
 import os,sys,requests,re,string
+from bs4 import BeautifulSoup
 
-try:
-	from bs4 import BeautifulSoup
-except ImportError:
-	from .bs4_local import BeautifulSoup
 
 class Imdb(object):
 	'''Class containing functions related to imdb'''

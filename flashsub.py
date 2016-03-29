@@ -1,12 +1,13 @@
 import opensubapi
 from subdb import SubDBAPI
 from imdb import Imdb
-import os,sys,string
+import os,sys
 from unicodedata import normalize
 import traceback
 
 RUNNING_AS_WINDOW = False
 DEV_NOTE = "\n\nDeveloped by:\nSuyash Agrawal (suyash1212@gmail.com)\n\n"
+FORBIDDEN_CHARS = "*\"/\[]|<>:"
 
 def get_list(dir_path):
 	file_list = []
@@ -17,7 +18,7 @@ def get_list(dir_path):
 			if not (os.path.exists(base_file+".srt") and \
 				os.path.exists(base_file+".nfo")) and\
 				ext in [".avi", ".mp4", ".mkv", ".mpg", ".mpeg", ".mov", ".rm", ".vob", ".wmv", ".flv", ".3gp",".3g2"] and\
-				int(os.path.getsize(name)) > 1024*1024*10:
+				int(os.path.getsize(name)) > 1024*1024*100:
 				file_list.append(name)
 	return file_list
 
@@ -135,28 +136,34 @@ if __name__ == "__main__":
 				
 		#Download Subs which are found in opensubtitles database
 		print "Downloading Subs"
+		
 		down_subs = {}
-		for num in xrange(0,len(open_subs_id),20):
-			print "*",
-			sub = opensub.download_sub_list(open_subs_id[num:num+20])
-			if sub==None:
-				for index in xrange(num,num+20):
-					temp_sub = opensub.download_sub(open_subs_id[index])
-					if temp_sub:
-						down_subs.update(temp_sub)
-			else:
-				down_subs.update(sub)
 
-		for sub_id,index in zip(open_subs_id,index_opensub):
-			try:
-				down_subs[sub_id]
-			except:
-				pass
-			else:
-				sub_list[index] = down_subs[sub_id]
+		if opensub.get_down_lim() <= 0:
+			print "Download Limit Reached!\nTry after 24 hours\n"
+		else:
+			for num in xrange(0,len(open_subs_id),20):
+				print "*",
+				sub = opensub.download_sub_list(open_subs_id[num:num+20])
+				if sub==None:
+					for index in xrange(num,num+20):
+						if index < len(open_subs_id):
+							temp_sub = opensub.download_sub(open_subs_id[index])
+							if temp_sub:
+								down_subs.update(temp_sub)
+				else:
+					down_subs.update(sub)
+
+			for sub_id,index in zip(open_subs_id,index_opensub):
+				try:
+					down_subs[sub_id]
+				except:
+					pass
+				else:
+					sub_list[index] = down_subs[sub_id]
 
 		if len(no_id_index) != 0:
-			print "\nSearching Subs"
+			print "\nSearching Info"
 			no_id_file = []
 			for index in no_id_index:
 				no_id_file.append(movie_list[index])
@@ -183,10 +190,12 @@ if __name__ == "__main__":
 				no_sub_imdb_id.append(imdb_id_list[i])
 				no_sub_imdb_id_index.append(i)
 
-		if len(no_sub_imdb_id) != 0:
-			print "Downloading Subs"              
+		if opensub.get_down_lim() <= 0:
+			print "Download Limit Reached!\nTry again after 24 hours\n"
+		elif len(no_sub_imdb_id) != 0:
+			print "Downloading Subs"
+			print no_sub_imdb_id
 			result = opensub.search_sub_list(imdbid_list=no_sub_imdb_id)
-			#print result
 			sub_id=[]
 			sub_id_index=[]
 			#Using reversed so that the first MovieHash overwrites the same MovieHashes that come after it.
@@ -199,9 +208,10 @@ if __name__ == "__main__":
 				else:
 					sub_id_index.append(index)
 					sub_id.append(result_dict[ids]['IDSubtitleFile'])
-					
+			
+			print sub_id
 			down_sub = opensub.download_sub_list(sub_id)
-					
+			print down_sub.keys()
 			for ids,index in zip(sub_id,sub_id_index):
 				try:
 					down_sub[ids]
@@ -215,10 +225,6 @@ if __name__ == "__main__":
 
 		print "Saving"
 
-		#Removing forbidden characters from files (Windows forbidden)
-		forbidden_chars = "*\"/\[]:|<>"
-		table = string.maketrans(forbidden_chars,' '*len(forbidden_chars))
-
 		try:
 			with open("log.txt","w") as log:
 				for num in xrange(num_movie):
@@ -227,6 +233,8 @@ if __name__ == "__main__":
 					base_name,ext = os.path.splitext(name)
 					info = info_list[num]
 					sub = sub_list[num]
+
+
 
 					log.write("\nCurrently Processing - {}\n".format(path))
 
@@ -242,23 +250,28 @@ if __name__ == "__main__":
 							Season = info['Season']
 							Episode = info['Episode']
 							if Season.isdigit() and Episode.isdigit():
+								try:
+									Series_name = normalize('NFKD',imdb.get_info([info['seriesID']])[0]['Title']).encode('ascii','ignore')
+								except:
+									Series_name = ""
 								len_season = 2
 								len_episode = 2
 								if len(Episode) > len_episode:
-									new_name = "S{0:0>2}E{1} {2}".format(str(Season),str(Episode),title)
+									new_name = "{0} S{1:0>2}E{2} {3}".format(Series_name,str(Season),str(Episode),title)
 								else:
-									new_name = "S{0:0>2}E{1:0>2} {2}".format(str(Season),str(Episode),title)
-									
-					#So that names do not conflict in Windows ( "/\:|' etc. are not allowed in Windows)
-					new_name = str(new_name).translate(table)
+									new_name = "{0} S{1:0>2}E{2:0>2} {3}".format(Series_name,str(Season),str(Episode),title)
+								
+					#Removing forbidden characters from files (Windows forbidden)
+					new_name = str(new_name).translate(None,FORBIDDEN_CHARS).lstrip()
 
 					if not os.path.exists(os.path.join(base_path,new_name)+ext):
 						os.rename(path,os.path.join(base_path,new_name)+ext)
 						log.write("Renamed {0} to {1}\n".format(base_name,new_name))
 								
 						if os.path.exists(os.path.join(base_path,base_name)+".srt"):
+							log.write("Subtitle Exists!\n")
 							os.rename(os.path.join(base_path,base_name)+".srt",os.path.join(base_path,new_name)+".srt")
-						elif sub != None:
+						elif sub:
 							log.write("Subtitle Added\n")
 							with open(os.path.join(base_path,new_name)+".srt","w") as sub_file:
 								sub_file.write(sub)
@@ -268,15 +281,15 @@ if __name__ == "__main__":
 								for key in info.keys():
 									info_file.write("{0}:\n{1}\n\n".format(key.encode('utf-8'),info[key].encode('utf-8')))
 					else:
-						if not os.path.exists(os.path.join(base_path,base_name)+".srt") and sub != None:
+						if sub and not os.path.exists(os.path.join(base_path,base_name)+".srt"):
 							log.write("Subtitle Added\n")
 							with open(os.path.join(base_path,base_name)+".srt","w") as sub_file:
 								sub_file.write(sub)
-						if info != None and not os.path.exists(os.path.join(base_path,base_name)+".nfo"):
+						if info and not os.path.exists(os.path.join(base_path,base_name)+".nfo"):
 							log.write("Info Added\n")
-							with open(os.path.join(base_path,base_name)+".nfo","w") as info_file:
-								for key in info.keys():
-									info_file.write("{0}:\n{1}\n\n".format(key.encode('utf-8'),info[key].encode('utf-8')))
+							#with open(os.path.join(base_path,base_name)+".nfo","w") as info_file:
+							#	for key in info.keys():
+							#		info_file.write("{0}:\n{1}\n\n".format(key.encode('utf-8'),info[key].encode('utf-8')))
 		except:
 			log.close()
 			opensub.logout()
@@ -291,8 +304,8 @@ if __name__ == "__main__":
 			raw_input("Press any key to exit...")
 	
 	except BaseException as e:
-		if not type(e).__name__ == "SystemExit":
-			print "Oops...An Error Occured!\n"
+		if not type(e).__name__ in ["SystemExit","KeyboardInterrupt"]:
+			print "\nOops...An Error Occured!\n"
 			print traceback.format_exc()
 		print(DEV_NOTE)
 		if RUNNING_AS_WINDOW:
