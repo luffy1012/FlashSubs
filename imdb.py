@@ -29,7 +29,7 @@ class Imdb(object):
 			table = string.maketrans(string.punctuation,' '*len(string.punctuation))
 			name = name.lower().translate(table).split()
 			if(len(name) > 4):
-				name = name[:5]
+				name = name[:6]
 			clean = ""
 			for component in name:
 				if not component in self._spam_name:

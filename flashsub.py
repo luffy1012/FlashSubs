@@ -19,7 +19,7 @@ def get_list(dir_path):
 			if not (os.path.exists(base_file+".srt") and \
 				os.path.exists(base_file+".nfo")) and\
 				ext in [".avi", ".mp4", ".mkv", ".mpg", ".mpeg", ".mov", ".rm", ".vob", ".wmv", ".flv", ".3gp",".3g2"] and\
-				int(os.path.getsize(name)) > 1024*1024*100:
+				int(os.path.getsize(name)) > 1024*1024*60:
 				file_list.append(name)
 	return file_list
 
@@ -221,38 +221,41 @@ if __name__ == "__main__":
 
 		if opensub.get_down_lim() <= 0:
 			print "Download Limit Reached!\nTry again after 24 hours\n"
+		
 		elif len(no_sub_imdb_id) != 0:
-			print "Downloading Subs"
-			print no_sub_imdb_id
-			result = opensub.search_sub_list(imdbid_list=no_sub_imdb_id)
-			sub_id=[]
-			sub_id_index=[]
-			#Using reversed so that the first MovieHash overwrites the same MovieHashes that come after it.
-			result_dict = {res['IDMovieImdb']:res for res in reversed(result)}
-			for ids,index in zip(no_sub_imdb_id,no_sub_imdb_id_index):
-				try:
-					result_dict[ids]
-				except:
-					pass
-				else:
-					sub_id_index.append(index)
-					sub_id.append(result_dict[ids]['IDSubtitleFile'])
-			
-			print sub_id
-			down_sub = opensub.download_sub_list(sub_id)
-			print down_sub.keys()
-			for ids,index in zip(sub_id,sub_id_index):
-				try:
-					down_sub[ids]
-				except:
-					pass
-				else:
-					sub_list[index] = down_sub[ids]
+			conf = raw_input("WARNING: Experimental\nOnly proceed if the names of your file are not mileading like videoplayback, movie, s9e8 etc.\nDo you wish to use this feature?(y/n): ")
+			if conf.lower() in ['yes','y']:
+				result = opensub.search_sub_list(imdbid_list=no_sub_imdb_id)
+				sub_id=[]
+				sub_id_index=[]
+				#Using reversed so that the first MovieHash overwrites the same MovieHashes that come after it.
+				result_dict = {res['IDMovieImdb']:res for res in reversed(result)}
+				for ids,index in zip(no_sub_imdb_id,no_sub_imdb_id_index):
+					try:
+						result_dict[ids]
+					except:
+						pass
+					else:
+						sub_id_index.append(index)
+						sub_id.append(result_dict[ids]['IDSubtitleFile'])
+				
+				down_sub = opensub.download_sub_list(sub_id)
+
+				for ids,index in zip(sub_id,sub_id_index):
+					try:
+						down_sub[ids]
+					except:
+						pass
+					else:
+						sub_list[index] = down_sub[ids]
 
 		#Final - sub_list - subtitles of movies in movie_list
 		#Final - info_list - info of movies in movie_list
 
 		print "Saving"
+
+		#dictionary with key as id of series and corresponding value as name of series.
+		series_dict={}
 
 		try:
 			for num in xrange(num_movie):
@@ -277,7 +280,13 @@ if __name__ == "__main__":
 						Episode = info['Episode']
 						if Season.isdigit() and Episode.isdigit():
 							try:
-								Series_name = normalize('NFKD',imdb.get_info([info['seriesID']])[0]['Title']).encode('ascii','ignore')
+								series_id = str(info['seriesID'])
+								try:
+									Series_name = series_dict[series_id]
+								except:
+									Series_name = normalize('NFKD',imdb.get_info([series_id])[0]['Title']).encode('ascii','ignore')
+									if Series_name:
+										series_dict[series_id] = Series_name
 							except:
 								Series_name = ""
 							len_season = 2
