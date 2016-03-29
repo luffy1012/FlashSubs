@@ -4,6 +4,7 @@ from imdb import Imdb
 import os,sys
 from unicodedata import normalize
 import traceback
+import argparse
 
 RUNNING_AS_WINDOW = False
 DEV_NOTE = "\nDeveloped by:\nSuyash Agrawal (suyash1212@gmail.com)\n\n"
@@ -30,29 +31,31 @@ if __name__ == "__main__":
 		log = open(log_file,"a")
 	else:
 		log = open(log_file,"w")
+	
 	try:
-
 		if len(sys.argv) > 1:
-			if len(sys.argv) ==2:
-				path = sys.argv[1]
-				proxy = None
-			elif len(sys.argv) > 3:
-				print "Usage: {} '<path to directory>' [--proxy=proxy_server_url:port] ".format(sys.argv[0])
-				sys.exit()
-			elif len(sys.argv) == 3:
-				if "--proxy" in sys.argv[1].split('=') :
-					proxy = sys.arg[1].split('=')[1]
-					path = sys.argv[2]
-				elif "--proxy" in sys.argv[2].split('='):
-					path = sys.argv[1]
-					proxy = sys.argv[2].split('=')[1]
-				else:
-					print "Usage: {} '<path to directory>' [--proxy=proxy_server_url:port] ".format(sys.argv[0])
-					sys.exit()
+			parser = argparse.ArgumentParser()
 
+			parser.add_argument("path",help="Path containing Movies and TV Series")
+			parser.add_argument("-l","--login", metavar="Username:Password",help="Login details of opensubtitles.org account")
+			parser.add_argument("-p","--proxy", metavar="Server_address:Port",help="Proxy address and port")
+			args = parser.parse_args()
+			path = args.path
+			
 			if not os.path.isdir(path):
-				print "Usage: {} '<path to directory>' [--proxy=proxy_server_url:port] ".format(sys.argv[0])
+				print "Enter Correct Path."
 				sys.exit()
+			
+			if args.login:
+				username,password = args.login.split(':')
+			else:
+				username = None
+				password = None
+
+			if args.proxy:
+				proxy = args.proxy
+			else:
+				proxy = None
 		else:
 			RUNNING_AS_WINDOW = True
 			path = raw_input("Enter the path of the directory: ")
@@ -61,24 +64,41 @@ if __name__ == "__main__":
 				sys.exit()
 			
 			conf = raw_input("Are you working behind a proxy? (y/n): ")
-			if conf.lower() in ['y','n',"yes",'yup']:
+			if conf.lower() in ['y',"yes",'yup']:
 				proxy = raw_input("Enter proxy_server:port -> ")
 			else:
 				proxy = None
 
+			conf = raw_input("Do you wish to login (opensubtitles.org account)? (y/n): ")
+			if conf.lower() in ['y',"yes",'yup']:
+				username = raw_input("Username- ")
+				password = raw_input("Password- ")
+			else:
+				username = None
+				password = None
+				
 		subdb = SubDBAPI()
 		if proxy:
 			imdb = Imdb({'http':proxy})
 		else:
 			imdb = Imdb()
+
 		opensub = opensubapi.OpenSubAPI(proxy)
-		try:
-			token = opensub.login()
-			assert type(token)==str
-		except:
-			print "Login to OpenSubtitles.org failed!"
-			sys.exit()
-		print "Login Successful\n"
+		
+		if username and password:
+			try:
+				token = opensub.login(username,password)
+				assert type(token)==str
+			except:
+				print "Invalid username or password.\n"
+				sys.exit()
+		else:
+			try:
+				token = opensub.login()
+				assert type(token)==str
+			except:
+				print "Check Internet Connection"
+				sys.exit()
 		#get file list
 		movie_list = get_list(path)
 		#Total Number of Movies
