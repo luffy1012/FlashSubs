@@ -92,6 +92,8 @@ if __name__ == "__main__":
 			except:
 				print "Invalid username or password.\n"
 				sys.exit()
+			else:
+				print "Login Successful\n"
 		else:
 			try:
 				token = opensub.login()
