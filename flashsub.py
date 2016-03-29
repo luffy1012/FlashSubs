@@ -6,7 +6,7 @@ from unicodedata import normalize
 import traceback
 
 RUNNING_AS_WINDOW = False
-DEV_NOTE = "\n\nDeveloped by:\nSuyash Agrawal (suyash1212@gmail.com)\n\n"
+DEV_NOTE = "\nDeveloped by:\nSuyash Agrawal (suyash1212@gmail.com)\n\n"
 FORBIDDEN_CHARS = "*\"/\[]|<>:"
 
 def get_list(dir_path):
@@ -24,8 +24,14 @@ def get_list(dir_path):
 
 
 if __name__ == "__main__":
-	print "\n"
+
+	log_file = os.path.join(os.path.dirname(os.path.realpath(__file__)),"log_flashsub.txt")
+	if os.path.isfile(log_file) and os.path.getsize(log_file) < 10*1024*1024:
+		log = open(log_file,"a")
+	else:
+		log = open(log_file,"w")
 	try:
+
 		if len(sys.argv) > 1:
 			if len(sys.argv) ==2:
 				path = sys.argv[1]
@@ -170,7 +176,8 @@ if __name__ == "__main__":
 			id_list = imdb.get_imdb_id(no_id_file)
 			for ids,index in zip(id_list,no_id_index):
 				imdb_id_list[index] = ids
-			#get info from imdb about movies in movie list
+		
+		#get info from imdb about movies in movie list
 		print "\nGetting Information"
 		info_list = imdb.get_info(["tt"+"0"*(7-len(ids))+ids if ids else None for ids in imdb_id_list])
 
@@ -226,78 +233,76 @@ if __name__ == "__main__":
 		print "Saving"
 
 		try:
-			with open("log.txt","w") as log:
-				for num in xrange(num_movie):
-					path = movie_list[num]
-					base_path,name = os.path.split(path)
-					base_name,ext = os.path.splitext(name)
-					info = info_list[num]
-					sub = sub_list[num]
+			for num in xrange(num_movie):
+				path = movie_list[num]
+				base_path,name = os.path.split(path)
+				base_name,ext = os.path.splitext(name)
+				info = info_list[num]
+				sub = sub_list[num]
 
+				log.write("\nCurrently Processing - {}\n".format(path))
 
+				try:
+					title = normalize('NFKD',info['Title']).encode('ascii','ignore')
+					new_name = title
+				except:
+					new_name = base_name
+				else:
+					if info['Type']=='series':
+						continue
+					elif info['Type'] == 'episode':
+						Season = info['Season']
+						Episode = info['Episode']
+						if Season.isdigit() and Episode.isdigit():
+							try:
+								Series_name = normalize('NFKD',imdb.get_info([info['seriesID']])[0]['Title']).encode('ascii','ignore')
+							except:
+								Series_name = ""
+							len_season = 2
+							len_episode = 2
+							if len(Episode) > len_episode:
+								new_name = "{0} S{1:0>2}E{2} {3}".format(Series_name,str(Season),str(Episode),title)
+							else:
+								new_name = "{0} S{1:0>2}E{2:0>2} {3}".format(Series_name,str(Season),str(Episode),title)
+							
+				#Removing forbidden characters from files (Windows forbidden)
+				new_name = str(new_name).translate(None,FORBIDDEN_CHARS).lstrip()
 
-					log.write("\nCurrently Processing - {}\n".format(path))
-
-					try:
-						title = normalize('NFKD',info['Title']).encode('ascii','ignore')
-						new_name = title
-					except:
-						new_name = base_name
-					else:
-						if info['Type']=='series':
-							continue
-						elif info['Type'] == 'episode':
-							Season = info['Season']
-							Episode = info['Episode']
-							if Season.isdigit() and Episode.isdigit():
-								try:
-									Series_name = normalize('NFKD',imdb.get_info([info['seriesID']])[0]['Title']).encode('ascii','ignore')
-								except:
-									Series_name = ""
-								len_season = 2
-								len_episode = 2
-								if len(Episode) > len_episode:
-									new_name = "{0} S{1:0>2}E{2} {3}".format(Series_name,str(Season),str(Episode),title)
-								else:
-									new_name = "{0} S{1:0>2}E{2:0>2} {3}".format(Series_name,str(Season),str(Episode),title)
-								
-					#Removing forbidden characters from files (Windows forbidden)
-					new_name = str(new_name).translate(None,FORBIDDEN_CHARS).lstrip()
-
-					if not os.path.exists(os.path.join(base_path,new_name)+ext):
-						os.rename(path,os.path.join(base_path,new_name)+ext)
-						log.write("Renamed {0} to {1}\n".format(base_name,new_name))
-								
-						if os.path.exists(os.path.join(base_path,base_name)+".srt"):
-							log.write("Subtitle Exists!\n")
-							os.rename(os.path.join(base_path,base_name)+".srt",os.path.join(base_path,new_name)+".srt")
-						elif sub:
-							log.write("Subtitle Added\n")
-							with open(os.path.join(base_path,new_name)+".srt","w") as sub_file:
-								sub_file.write(sub)
-						if info:
-							log.write("Info Added\n")
-							with open(os.path.join(base_path,new_name)+".nfo","w") as info_file:
-								for key in info.keys():
-									info_file.write("{0}:\n{1}\n\n".format(key.encode('utf-8'),info[key].encode('utf-8')))
-					else:
-						if sub and not os.path.exists(os.path.join(base_path,base_name)+".srt"):
-							log.write("Subtitle Added\n")
-							with open(os.path.join(base_path,base_name)+".srt","w") as sub_file:
-								sub_file.write(sub)
-						if info and not os.path.exists(os.path.join(base_path,base_name)+".nfo"):
-							log.write("Info Added\n")
-							#with open(os.path.join(base_path,base_name)+".nfo","w") as info_file:
-							#	for key in info.keys():
-							#		info_file.write("{0}:\n{1}\n\n".format(key.encode('utf-8'),info[key].encode('utf-8')))
+				if not os.path.exists(os.path.join(base_path,new_name)+ext):
+					os.rename(path,os.path.join(base_path,new_name)+ext)
+					log.write("Renamed {0} to {1}\n".format(base_name,new_name))
+							
+					if os.path.exists(os.path.join(base_path,base_name)+".srt"):
+						log.write("Subtitle Exists!\n")
+						os.rename(os.path.join(base_path,base_name)+".srt",os.path.join(base_path,new_name)+".srt")
+					elif sub:
+						log.write("Subtitle Added\n")
+						with open(os.path.join(base_path,new_name)+".srt","w") as sub_file:
+							sub_file.write(sub)
+					if info:
+						log.write("Info Added\n")
+						with open(os.path.join(base_path,new_name)+".nfo","w") as info_file:
+							for key in info.keys():
+								info_file.write("{0}:\n{1}\n\n".format(key.encode('utf-8'),info[key].encode('utf-8')))
+				else:
+					if sub and not os.path.exists(os.path.join(base_path,base_name)+".srt"):
+						log.write("Subtitle Added\n")
+						with open(os.path.join(base_path,base_name)+".srt","w") as sub_file:
+							sub_file.write(sub)
+					if info and not os.path.exists(os.path.join(base_path,base_name)+".nfo"):
+						log.write("Info Added\n")
+						with open(os.path.join(base_path,base_name)+".nfo","w") as info_file:
+							for key in info.keys():
+								info_file.write("{0}:\n{1}\n\n".format(key.encode('utf-8'),info[key].encode('utf-8')))
 		except:
-			log.close()
 			opensub.logout()
 			raise
 
-
+		log.write("-"*120)
+		log.close()
 		opensub.logout()
 		print("\nDone!")
+		print("Changes done are stored in {}\n".format(log_file))
 		print(DEV_NOTE)
 
 		if RUNNING_AS_WINDOW:
@@ -306,8 +311,12 @@ if __name__ == "__main__":
 	except BaseException as e:
 		if not type(e).__name__ in ["SystemExit","KeyboardInterrupt"]:
 			print "\nOops...An Error Occured!\n"
-			print traceback.format_exc()
+			log.write("\nERROR:\n")
+			log.write(traceback.format_exc())
+			print "Error information stored in {}".format(log_file)
 		print(DEV_NOTE)
+		log.write("\n"+"-"*120)
+		log.close()
 		if RUNNING_AS_WINDOW:
 			raw_input("Press any key to exit...")
 		sys.exit()
