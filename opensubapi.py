@@ -219,7 +219,6 @@ class OpenSubAPI(object):
         self._data = self._os_server.GuessMovieFromString(self.token,[name])
         result = self._check_result('data')
         if result:
-            #!!! CHECK !!!#
             return result[name]['BestGuess']
 
     def _get_hash(self,path):
@@ -258,7 +257,7 @@ class OpenSubAPI(object):
     def get_down_lim(self):
         self._data = self._os_server.NoOperation(self.token)
         try:
-            down_quota = self._data['donwload_limits']['client_download_quota']
+            down_quota = self._data['download_limits']['client_download_quota']
         except:
             return None
         else:
