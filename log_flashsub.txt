@@ -1,0 +1,450 @@
+
+Currently Processing - /media/500_GB/Movies/A Bug's Life/A Bug s Life.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/American Sniper/kaljsldjlkasd.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Apollo 13/Apollo 13.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Bhaag Milkha Bhaag/Bhaag Milkha Bhaag.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Dil Chahta Hai/Dil Chahta Hai.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Donnie Darko/Donnie Darko.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Drishyam/Drishyam.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Edge of Tomorrow/Edge of Tomorrow.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Enemy at the Gates/Enemy at the Gates.avi
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Fight Club/Fight Club.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Forrest Gump/Forrest Gump.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Frozen/Frozen.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Gangs of Wasseypur/Gangs of Wasseypur.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Gangs Of Wasseypur 2 [2012] [720p] [DVDRiP]/Gangs of Wasseypur.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Gone Girl/Gone Girl.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Gravity/Gravity.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Inside Out/Inside Out.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Insidious/Insidious.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Jobs/Jobs.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Kung Fu Panda 3/Kung Fu Panda 3.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Minions/Minions.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Pulp Fiction/Pulp Fiction.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Shutter Island/Shutter Island.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Sinister/Sinister.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Taken 2/Taken 2.avi
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The 5th Wave/The 5th Wave.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Butterfly Effect/The Butterfly Effect.avi
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Conjuring/The Conjuring.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Dark Knight/The Dark Knight.avi
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Silence of the Lambs/The Silence of the Lambs.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Social Network/The Social Network.avi
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Theory of Everything/The Theory of Everything.avi
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Udaan/Udaan.avi
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/V for Vendetta/V for Vendetta.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Whiplash (2014)/Whiplash.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/White House Down/White House Down.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/World War Z/World War Z.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Girl Next Door/The Girl Next Door.avi
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Girl with the Dragon Tattoo/The Girl with the Dragon Tattoo.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Godfather/The Godfather.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Great Gatsby/The Great Gatsby.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Grudge/The Grudge.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Illusionist/The Illusionist.avi
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Imitation Game/The Imitation Game.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Interview/The Interview.avi
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Matrix/The Matrix.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Matrix Reloaded/The Matrix Reloaded.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Matrix Revolutions/The Matrix Revolutions.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Maze Runner/The Maze Runner.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Perks of Being a Wallflower/The Perks of Being a Wallflower.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Prestige/The Prestige.mkv
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/Interstellar/Interstellar.mp4
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Dictator/The Dictator.avi
+Subtitle Added
+
+Currently Processing - /media/500_GB/Movies/The Pursuit of Happyness/The Pursuit of Happyness.avi
+Subtitle Added
+------------------------------------------------------------------------------------------------------------------------
+Currently Processing - /media/500_GB/Movies/American Sniper/kaljsldjlkasd.mp4
+------------------------------------------------------------------------------------------------------------------------
+Currently Processing - /media/500_GB/Movies/American Sniper/kaljsldjlkasd.mp4
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ERROR:
+Traceback (most recent call last):
+  File "/home/suyash1212/Coding/Project/FlashSubs/__main__.py", line 204, in <module>
+    print "\nGetting Information"
+NameError: name 'imdbid_list' is not defined
+
+------------------------------------------------------------------------------------------------------------------------
+ERROR:
+Traceback (most recent call last):
+  File "/home/suyash1212/Coding/Project/FlashSubs/__main__.py", line 129, in <module>
+    print result
+NameError: name 'result' is not defined
+
+------------------------------------------------------------------------------------------------------------------------
+ERROR:
+Traceback (most recent call last):
+  File "/home/suyash1212/Coding/Project/FlashSubs/__main__.py", line 207, in <module>
+    print "\nGetting Information"
+NameError: name 'imdbid_list' is not defined
+
+------------------------------------------------------------------------------------------------------------------------
+Currently Processing - /media/500_GB/Movies/American Sniper/kaljsldjlkasd.mp4
+------------------------------------------------------------------------------------------------------------------------
+Currently Processing - /media/500_GB/Movies/American Sniper/kaljsldjlkasd.mp4
+Renamed kaljsldjlkasd to American Sniper
+Subtitle Exists!
+Info Added
+------------------------------------------------------------------------------------------------------------------------
+Currently Processing - /media/500_GB/Movies/A Bug's Life/skadas.mp4
+Renamed skadas to A Bug's Life
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/American Sniper/amsp.mp4
+Renamed amsp to American Sniper
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Apollo 13/Apollo 13.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Bhaag Milkha Bhaag/Bhaag Milkha Bhaag.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Dil Chahta Hai/Dil Chahta Hai.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Donnie Darko/Donnie Darko.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Drishyam/Drishyam.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Edge of Tomorrow/Edge of Tomorrow.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Enemy at the Gates/Enemy at the Gates.avi
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Fight Club/Fight Club.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Forrest Gump/Forrest Gump.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Frozen/Frozen.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Gangs of Wasseypur/Gangs of Wasseypur.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Gangs Of Wasseypur 2 [2012] [720p] [DVDRiP]/Gangs of Wasseypur.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Gone Girl/Gone Girl.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Gravity/Gravity.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Inside Out/Inside Out.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Insidious/Insidious.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Jobs/Jobs.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Kung Fu Panda 3/Kung Fu Panda 3.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Minions/Minions.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Pulp Fiction/Pulp Fiction.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Shutter Island/Shutter Island.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Sinister/Sinister.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Taken 2/Taken 2.avi
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The 5th Wave/The 5th Wave.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Butterfly Effect/The Butterfly Effect.avi
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Conjuring/The Conjuring.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Dark Knight/The Dark Knight.avi
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Silence of the Lambs/The Silence of the Lambs.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Social Network/The Social Network.avi
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Theory of Everything/The Theory of Everything.avi
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Udaan/Udaan.avi
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/V for Vendetta/V for Vendetta.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Whiplash (2014)/Whiplash.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/White House Down/White House Down.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/World War Z/World War Z.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Girl Next Door/The Girl Next Door.avi
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Girl with the Dragon Tattoo/The Girl with the Dragon Tattoo.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Godfather/The Godfather.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Great Gatsby/The Great Gatsby.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Grudge/The Grudge.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Illusionist/The Illusionist.avi
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Imitation Game/The Imitation Game.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Interview/The Interview.avi
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Matrix/The Matrix.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Matrix Reloaded/The Matrix Reloaded.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Matrix Revolutions/The Matrix Revolutions.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Maze Runner/The Maze Runner.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Perks of Being a Wallflower/The Perks of Being a Wallflower.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Prestige/The Prestige.mkv
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/Interstellar/Interstellar.mp4
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Dictator/The Dictator.avi
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/Movies/The Pursuit of Happyness/The Pursuit of Happyness.avi
+Subtitle Added
+Info Added
+------------------------------------------------------------------------------------------------------------------------
+Currently Processing - /media/500_GB/TV/English/Breaking Bad/Season 1/S01E01 Pilot.mkv
+Renamed S01E01 Pilot to Breaking Bad S01E01 Pilot
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/TV/English/Breaking Bad/Season 1/S01E02 Cat's in the Bag....mkv
+Renamed S01E02 Cat's in the Bag... to Breaking Bad S01E02 Cat's in the Bag...
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/TV/English/Breaking Bad/Season 1/S01E03 ...And the Bag's in the River.mkv
+Renamed S01E03 ...And the Bag's in the River to Breaking Bad S01E03 ...And the Bag's in the River
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/TV/English/Breaking Bad/Season 1/S01E04 Cancer Man.mkv
+Renamed S01E04 Cancer Man to Breaking Bad S01E04 Cancer Man
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/TV/English/Breaking Bad/Season 1/S01E05 Gray Matter.mkv
+Renamed S01E05 Gray Matter to Breaking Bad S01E05 Gray Matter
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/TV/English/Breaking Bad/Season 1/S01E06 Crazy Handful of Nothin'.mkv
+Renamed S01E06 Crazy Handful of Nothin' to Breaking Bad S01E06 Crazy Handful of Nothin'
+Subtitle Added
+Info Added
+
+Currently Processing - /media/500_GB/TV/English/Breaking Bad/Season 1/S01E07 A No-Rough-Stuff-Type Deal.mkv
+Renamed S01E07 A No-Rough-Stuff-Type Deal to Breaking Bad S01E07 A No-Rough-Stuff-Type Deal
+Subtitle Added
+Info Added
+------------------------------------------------------------------------------------------------------------------------

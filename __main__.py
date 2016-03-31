@@ -5,9 +5,10 @@ import os,sys
 from unicodedata import normalize
 import traceback
 import argparse
+import pdb
 
 RUNNING_AS_WINDOW = False
-DEV_NOTE = "\nDeveloped by:\nSuyash Agrawal (suyash1212@gmail.com)\n\n"
+DEV_NOTE = "\nFlashSubs v0.30\n\nDeveloped by:\nSuyash Agrawal (suyash1212@gmail.com)\n"
 FORBIDDEN_CHARS = "*\"/\[]|<>:"
 
 def get_list(dir_path):
@@ -65,7 +66,7 @@ if __name__ == "__main__":
 			
 			conf = raw_input("Are you working behind a proxy? (y/n): ")
 			if conf.lower() in ['y',"yes",'yup']:
-				proxy = raw_input("Enter proxy_server:port -> ")
+				proxy = raw_input("Enter http proxy_server:port -> ")
 			else:
 				proxy = None
 
@@ -131,7 +132,7 @@ if __name__ == "__main__":
 			for i in xrange(num_movie):
 				if result[i]:
 					imdb_id_list[i] = result[i]['MovieImdbID']
-			
+
 		print "Downloading Subs"
 		for i in xrange(num_movie):
 			if i%20 == 0:
@@ -143,6 +144,7 @@ if __name__ == "__main__":
 				sub = subdb.get_subs(movie_hash,'en')
 				if sub:
 					sub_list[i] = sub
+
 
 		#get movies which are present in opensub database by name or hash
 		print "\nSearching Subs"
@@ -198,11 +200,9 @@ if __name__ == "__main__":
 			id_list = imdb.get_imdb_id(no_id_file)
 			for ids,index in zip(id_list,no_id_index):
 				imdb_id_list[index] = ids
-		
 		#get info from imdb about movies in movie list
 		print "\nGetting Information"
 		info_list = imdb.get_info(["tt"+"0"*(7-len(ids))+ids if ids else None for ids in imdb_id_list])
-
 
 		#Now, sub_list = subtitles for corresponding movies in movie_list
 		# info_list = info for correspoding movies in movie_list
