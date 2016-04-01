@@ -27,7 +27,7 @@ def get_list(dir_path):
 
 if __name__ == "__main__":
 
-	log_file = os.path.join(os.path.dirname(os.path.realpath(__file__)),"log_flashsub.txt")
+	log_file = os.path.join(os.path.dirname(os.path.realpath(__file__)),"log_flashsubs.txt")
 	if os.path.isfile(log_file) and os.path.getsize(log_file) < 10*1024*1024:
 		log = open(log_file,"a")
 	else:
