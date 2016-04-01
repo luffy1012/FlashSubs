@@ -5,14 +5,14 @@ download subtitles and other information(Correct Title, IMDB rating, Plot Summar
 for movies and TV Series in our computer.
 
 Usage:
-python flashsub.py <'path to directory containing media'>
+python FlashSubs <'path to directory containing media'>
 
-(for additional options see- python flashsub.py --help)
+(for additional options see- python FlashSubs --help)
 
 OR
 
 It can be started in Interactive mode by running without command line arguments, like
-python flashsub.py
+python FlashSubs
 
 A local bs4 module is used.
 Latest bs4 module can be found at - https://github.com/bdoms/beautifulsoup
@@ -31,6 +31,6 @@ Does not work well with japanese Anime or any video other than Movies and Englis
 and thus should not be run on a folder containing these items.
 Doing so may result in improper renaming and will cause a mess.
 
-Program only recognises files greater than 100MB to avoid files which are neither TV shows or Movies.
+Program only recognises files greater than 60MB to avoid files which are neither TV shows or Movies.
 All changes are stored in a file name log.txt in the folder containing the program
 which is deleted after its size reaches 10MB.
