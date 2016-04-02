@@ -313,7 +313,7 @@ if __name__ == "__main__":
 					if info:
 						log.write("Info Added\n")
 						with open(os.path.join(base_path,new_name)+".nfo","w") as info_file:
-							for key in info.keys():
+							for key in sorted(info.iterkeys()):
 								info_file.write("{0}:\n{1}\n\n".format(key.encode('utf-8'),info[key].encode('utf-8')))
 				else:
 					if sub and not os.path.exists(os.path.join(base_path,base_name)+".srt"):
@@ -323,7 +323,7 @@ if __name__ == "__main__":
 					if info and not os.path.exists(os.path.join(base_path,base_name)+".nfo"):
 						log.write("Info Added\n")
 						with open(os.path.join(base_path,base_name)+".nfo","w") as info_file:
-							for key in info.keys():
+							for key in sorted(info.iterkeys()):
 								info_file.write("{0}:\n{1}\n\n".format(key.encode('utf-8'),info[key].encode('utf-8')))
 		except:
 			opensub.logout()
