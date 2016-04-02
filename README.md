@@ -4,18 +4,20 @@ This is a python program that manages our media library i.e. it can automaticall
 download subtitles and other information(Correct Title, IMDB rating, Plot Summary etc.)
 for movies and TV Series in our computer.
 
-Usage:
-python FlashSubs <'path to directory containing media'>
+Install:
+python -r Requirements.txt
+	OR
+./flashsubs install
 
-(for additional options see- python FlashSubs --help)
+Usage:
+
+./flashsubs <'path to directory containing media'>
+(for additional options see-> ./flashsubs --help)
 
 OR
 
 It can be started in Interactive mode by running without command line arguments, like
-python FlashSubs
-
-A local bs4 module is used.
-Latest bs4 module can be found at - https://github.com/bdoms/beautifulsoup
+./flashsubs
 
 Subtitles are searched using-
 	1. Subdb database (hash)
@@ -34,3 +36,5 @@ Doing so may result in improper renaming and will cause a mess.
 Program only recognises files greater than 60MB to avoid files which are neither TV shows or Movies.
 All changes are stored in a file name log.txt in the folder containing the program
 which is deleted after its size reaches 10MB.
+
+TODO: Add GUI and Undo feature
