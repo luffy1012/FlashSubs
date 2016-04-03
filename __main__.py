@@ -55,6 +55,8 @@ if __name__ == "__main__":
 
 			if args.proxy:
 				proxy = args.proxy
+			        if proxy[:4] != "http":
+                                    proxy = "http://"+proxy
 			else:
 				proxy = None
 		else:
@@ -67,6 +69,8 @@ if __name__ == "__main__":
 			conf = raw_input("Are you working behind a proxy? (y/n): ")
 			if conf.lower() in ['y',"yes",'yup']:
 				proxy = raw_input("Enter http proxy_server:port -> ")
+			        if proxy[:4] != "http":
+                                    proxy = "http://"+proxy
 			else:
 				proxy = None
 
