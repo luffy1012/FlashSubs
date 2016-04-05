@@ -3,5 +3,5 @@
 if [ "$1" == "install" ]; then
 	sudo pip install -r Requirements.txt
 else
-	python __main__.py $@
+	python ./html_front_end/manage.py runserver
 fi
