@@ -22,59 +22,8 @@ def get_list(dir_path):
 				int(os.path.getsize(name)) > 1024*1024*60:
 				file_list.append(name)
 	return file_list
-
-def prog_init():
-	if len(sys.argv) > 1:
-		parser = argparse.ArgumentParser()
-
-		parser.add_argument("path",help="Path containing Movies and TV Series")
-		parser.add_argument("-l","--login", metavar="Username:Password",help="Login details of opensubtitles.org account")
-		parser.add_argument("-p","--proxy", metavar="Server_address:Port",help="Proxy address and port")
-		args = parser.parse_args()
-		path = args.path
-		
-		if not os.path.isdir(path):
-			print "Enter Correct Path."
-			sys.exit()
-		
-		if args.login:
-			username,password = args.login.split(':')
-		else:
-			username = None
-			password = None
-
-		if args.proxy:
-			proxy = args.proxy
-			if proxy[:4] != "http":
-				proxy = "http://"+proxy
-		else:
-			proxy = None
-	else:
-		RUNNING_AS_WINDOW = True
-		path = raw_input("Enter the path of the directory: ")
-		if not os.path.isdir(path):
-			print "Path given is not valid!"
-			sys.exit()
-		
-		conf = raw_input("Are you working behind a proxy? (y/n): ")
-		if conf.lower() in ['y',"yes",'yup']:
-			proxy = raw_input("Enter http proxy_server:port -> ")
-			if proxy[:4] != "http":
-				proxy = "http://"+proxy
-		else:
-			proxy = None
-
-		conf = raw_input("Do you wish to login (opensubtitles.org account)? (y/n): ")
-		if conf.lower() in ['y',"yes",'yup']:
-			username = raw_input("Username- ")
-			password = raw_input("Password- ")
-		else:
-			username = None
-			password = None
-
-	return (username,password,proxy,path)
-
-def subdb_download(result,num_movie,movie_list,sub_list):
+	
+def subdb_download(result,num_movie,movie_list,sub_list,subdb):
 	for i in xrange(num_movie):
 		if i%20 == 0:
 			print"*",
@@ -86,7 +35,7 @@ def subdb_download(result,num_movie,movie_list,sub_list):
 			if sub:
 				sub_list[i] = sub
 
-def opensub_download(open_subs_id,index_opensub,sub_list):
+def opensub_download(open_subs_id,index_opensub,sub_list,opensub):
 	down_subs = {}
 	if opensub.get_down_lim() <= 0:
 		print "Download Limit Reached!\nTry after 24 hours\n"
@@ -111,7 +60,7 @@ def opensub_download(open_subs_id,index_opensub,sub_list):
 			else:
 				sub_list[index] = down_subs[sub_id]
 
-def opensub_download_id(no_sub_imdb_id,no_sub_imdb_id_index,sub_list):
+def opensub_download_id(no_sub_imdb_id,no_sub_imdb_id_index,sub_list,opensub):
 	result = opensub.search_sub_list(imdbid_list=no_sub_imdb_id)
 	sub_id=[]
 	sub_id_index=[]
@@ -138,7 +87,7 @@ def opensub_download_id(no_sub_imdb_id,no_sub_imdb_id_index,sub_list):
 
 def save(base_path,base_name,new_name,ext,sub,info,log):
 	if not os.path.exists(os.path.join(base_path,new_name)+ext):
-		os.rename(path,os.path.join(base_path,new_name)+ext)
+		os.rename(os.path.join(base_path,base_name)+ext,os.path.join(base_path,new_name)+ext)
 		log.write("Renamed \"{0}\" to \"{1}\"\n".format(base_name,new_name))
 				
 		if os.path.exists(os.path.join(base_path,base_name)+".srt"):
@@ -163,10 +112,8 @@ def save(base_path,base_name,new_name,ext,sub,info,log):
 			with open(os.path.join(base_path,base_name)+".nfo","w") as info_file:
 				for key in sorted(info.iterkeys()):
 					info_file.write("{0}:\n{1}\n\n".format(key.encode('utf-8'),info[key].encode('utf-8')))
-#########################################################################################################################
 
-if __name__ == "__main__":
-
+def run(path,proxy,username,password):
 	log_file = os.path.join(os.path.dirname(os.path.realpath(__file__)),"log_flashsubs.txt")
 	if os.path.isfile(log_file) and os.path.getsize(log_file) < 10*1024*1024:
 		log = open(log_file,"a")
@@ -174,8 +121,6 @@ if __name__ == "__main__":
 		log = open(log_file,"w")
 	
 	try:
-		username,password,proxy,path = prog_init()
-
 		subdb = SubDBAPI()
 		if proxy:
 			imdb = Imdb({'http':proxy})
@@ -239,7 +184,7 @@ if __name__ == "__main__":
 					imdb_id_list[i] = result[i]['MovieImdbID']
 
 		print "Downloading Subs"
-		subdb_download(result,num_movie,movie_list,sub_list)
+		subdb_download(result,num_movie,movie_list,sub_list,subdb)
 
 
 		#get movies which are present in opensub database by name or hash
@@ -262,7 +207,7 @@ if __name__ == "__main__":
 				
 		#Download Subs which are found in opensubtitles database
 		print "Downloading Subs"
-		opensub_download(open_subs_id,index_opensub,sub_list)
+		opensub_download(open_subs_id,index_opensub,sub_list,opensub)
 		
 
 		if len(no_id_index) != 0:
@@ -300,7 +245,7 @@ if __name__ == "__main__":
 			conf = raw_input("\nWARNING: Experimental\nOnly proceed if the names of your file are not misleading \
 like videoplayback, movie, s9e8 etc.\nDo you wish to use this feature?(y/n): ")
 			if conf.lower() in ['yes','y']:
-				opensub_download_id(no_sub_imdb_id,no_sub_imdb_id_index,sub_list)
+				opensub_download_id(no_sub_imdb_id,no_sub_imdb_id_index,sub_list,opensub)
 
 		#Final - sub_list - subtitles of movies in movie_list
 		#Final - info_list - info of movies in movie_list
@@ -379,4 +324,59 @@ like videoplayback, movie, s9e8 etc.\nDo you wish to use this feature?(y/n): ")
 		log.close()
 		if RUNNING_AS_WINDOW:
 			raw_input("Press any key to exit...")
-		sys.exit()
+		return
+
+
+
+#########################################################################################################################
+
+if __name__ == "__main__":
+	if len(sys.argv) > 1:
+		parser = argparse.ArgumentParser()
+
+		parser.add_argument("path",help="Path containing Movies and TV Series")
+		parser.add_argument("-l","--login", metavar="Username:Password",help="Login details of opensubtitles.org account")
+		parser.add_argument("-p","--proxy", metavar="Server_address:Port",help="Proxy address and port")
+		args = parser.parse_args()
+		path = args.path
+		
+		if not os.path.isdir(path):
+			print "Enter Correct Path."
+			sys.exit()
+		
+		if args.login:
+			username,password = args.login.split(':')
+		else:
+			username = None
+			password = None
+
+		if args.proxy:
+			proxy = args.proxy
+			if proxy[:4] != "http":
+				proxy = "http://"+proxy
+		else:
+			proxy = None
+	else:
+		RUNNING_AS_WINDOW = True
+		path = raw_input("Enter the path of the directory: ")
+		if not os.path.isdir(path):
+			print "Path given is not valid!"
+			sys.exit()
+		
+		conf = raw_input("Are you working behind a proxy? (y/n): ")
+		if conf.lower() in ['y',"yes",'yup']:
+			proxy = raw_input("Enter http proxy_server:port -> ")
+			if proxy[:4] != "http":
+				proxy = "http://"+proxy
+		else:
+			proxy = None
+
+		conf = raw_input("Do you wish to login (opensubtitles.org account)? (y/n): ")
+		if conf.lower() in ['y',"yes",'yup']:
+			username = raw_input("Username- ")
+			password = raw_input("Password- ")
+		else:
+			username = None
+			password = None
+
+	run(path,proxy,username,password)	
