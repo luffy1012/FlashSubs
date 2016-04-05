@@ -12,7 +12,7 @@ import base64
 
 class Setting(object):
     OPENSUBTITLES_SERVER ='http://api.opensubtitles.org/xml-rpc'
-    USER_AGENT = 'OSTestUserAgent'
+    USER_AGENT = 'FlashSubs'
     LANGUAGE = 'en'
 
 
